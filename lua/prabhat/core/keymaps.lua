@@ -22,6 +22,9 @@ keymap("n", "<leader><Left>", ":bprevious<CR>", opts)
 -- Command Cleanups
 keymap({ "n", "v" }, "<leader>d", '"_d')
 
+-- Copy corrections
+keymap("n", "x", '"_x')
+
 -- Visual --
 -- Stay in indent mode
 keymap("v", "<", "<gv^", opts)

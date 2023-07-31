@@ -86,8 +86,10 @@ return packer.startup(function(use)
     use { "akinsho/toggleterm.nvim", tag = '*', config = function()
         require("toggleterm").setup {
             open_mapping = '<leader>t',
-            direction = 'float',
+            direction = 'vertical',
+            insert_mappings = false,
             shade_terminals = true,
+            size = 40,
         }
     end }
     --  LSP Setup with LSP-Zero
