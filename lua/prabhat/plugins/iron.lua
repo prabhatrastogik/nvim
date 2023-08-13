@@ -3,7 +3,7 @@ local iron = require("iron.core")
 iron.setup {
     config = {
         -- Whether a repl should be discarded or not
-        scratch_repl = true,
+        scratch_repl = false,
         -- Your repl definitions come here
         repl_definition = {
             sh = {

@@ -144,8 +144,12 @@ return packer.startup(function(use)
             }
         end
     }
-    -- REPL
+    -- REPL & Jupyter
     use { 'Vigemus/iron.nvim' }
+    use { 'GCBallesteros/jupytext.vim' }
+    use { 'kana/vim-textobj-user' }
+    use { 'GCBallesteros/vim-textobj-hydrogen' }
+    -- use { 'luk400/vim-jukit' }
     -- UI Enhancements
     use {
         'lukas-reineke/indent-blankline.nvim',
@@ -160,10 +164,14 @@ return packer.startup(function(use)
         tag = "*",
         requires = 'nvim-tree/nvim-web-devicons',
         config = function()
-            require('bufferline').setup {}
+            require('bufferline').setup()
         end
     }
     use { 'RRethy/vim-illuminate' }
+    use {
+        "windwp/nvim-autopairs",
+        config = function() require("nvim-autopairs").setup {} end
+    }
     -- use {
     --     "startup-nvim/startup.nvim",
     --     requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },

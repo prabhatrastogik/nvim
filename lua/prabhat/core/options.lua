@@ -44,4 +44,14 @@ for k, v in pairs(options) do
     vim.opt[k] = v
 end
 
+-- Global Vars
+local global_vars = {
+    jupytext_fmt = 'py',
+    jupytext_style = 'hydrogen',
+}
+
+for k, v in pairs(global_vars) do
+    vim.g[k] = v
+end
+
 vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]

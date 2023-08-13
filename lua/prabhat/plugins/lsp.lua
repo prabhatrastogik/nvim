@@ -33,9 +33,9 @@ lsp.set_sign_icons({
 lsp.ensure_installed({
     -- Replace these with whatever servers you want to install
     'tsserver',
-    'eslint',
     'rust_analyzer',
     'pylsp',
+    'lua_ls',
 })
 
 lsp.setup()
@@ -67,4 +67,33 @@ lspconfig.lua_ls.setup {
             },
         },
     },
+}
+
+lspconfig.pylsp.setup {
+    settings = {
+        pylsp = {
+            plugins = {
+                pycodestyle = {
+                    ignore = { 'W391' },
+                    maxLineLength = 100
+                },
+                autopep8 = {
+                    enabled = false
+                },
+                yapf = {
+                    enabled = true
+                },
+                rope_autoimport = {
+                    enabled = true
+                },
+                rope_completion = {
+                    enabled = true,
+                    eager = true
+                },
+                ruff = {
+                    lineLength = 100
+                }
+            }
+        }
+    }
 }
