@@ -38,7 +38,6 @@ keymap("v", "<leader><Down>", ":m '<-2<CR>gv=gv", opts)
 keymap("v", "p", '"_dP', opts)
 
 -- Visual Block --
-
 -- Move text up and down
 keymap("x", "<leader><Up>", ":m '>+1<CR>gv=gv", opts)
 keymap("x", "<leader><Down>", ":m '<-2<CR>gv=gv", opts)
