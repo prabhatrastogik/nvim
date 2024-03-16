@@ -1,4 +1,4 @@
-local opts = { noremap = true, silent = true }
+local opts = { noremap = true } --,silent = true }
 local keymap = vim.keymap.set
 
 
@@ -16,7 +16,7 @@ keymap("n", "<C-a>", "ggVG<cr>", opts)
 keymap({ "i", "v", "n" }, "<C-s>", "<cmd>w<cr><esc>", opts)
 
 -- Close buffer
-vim.keymap.set({ "i", "v", "n" }, "<C-w>", "<cmd>bd<cr><esc>", { desc = "Close buffer" })
+vim.keymap.set({ "v", "n" }, "<C-w>", "<cmd>bd<cr><esc>", { desc = "Close buffer" })
 
 -- Navigate buffers
 keymap("n", "<leader><Right>", ":bnext<CR>", opts)
@@ -29,8 +29,8 @@ keymap({ "n", "v" }, "<leader>d", '"_d')
 keymap("n", "x", '"_x')
 
 -- Move Lines
-keymap({ "n", "i" }, "<leader><Up>", "<Esc>:m .-2<cr>==", { desc = "Move down" })
-keymap({ "n", "i" }, "<leader><Down>", "<Esc>:m .+1<cr>==", { desc = "Move down" })
+keymap({ "n" }, "<leader><Up>", "<Esc>:m .-2<cr>==", { desc = "Move down" })
+keymap({ "n" }, "<leader><Down>", "<Esc>:m .+1<cr>==", { desc = "Move down" })
 
 
 -- Visual --

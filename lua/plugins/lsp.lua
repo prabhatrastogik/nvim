@@ -31,16 +31,35 @@ return {
             -- And you can configure cmp even more, if you want to.
             local cmp = require('cmp')
             local cmp_action = lsp_zero.cmp_action()
+            require('luasnip.loaders.from_vscode').lazy_load()
 
             cmp.setup({
+                sources = {
+                    { name = 'path' },
+                    { name = 'nvim_lsp' },
+                    { name = 'luasnip', keyword_length = 2 },
+                    { name = 'buffer',  keyword_length = 3 },
+                },
+                window = {
+                    completion = cmp.config.window.bordered(),
+                    documentation = cmp.config.window.bordered(),
+                },
                 formatting = lsp_zero.cmp_format({ details = true }),
                 mapping = cmp.mapping.preset.insert({
+                    -- confirm completion item
+                    ['<Enter>'] = cmp.mapping.confirm({ select = true }),
+
+                    -- trigger completion menu
                     ['<C-Space>'] = cmp.mapping.complete(),
+
+                    -- scroll up and down the documentation window
                     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
                     ['<C-d>'] = cmp.mapping.scroll_docs(4),
+
+                    -- navigate between snippet placeholders
                     ['<C-f>'] = cmp_action.luasnip_jump_forward(),
                     ['<C-b>'] = cmp_action.luasnip_jump_backward(),
-                })
+                }),
             })
         end
     },
@@ -66,6 +85,12 @@ return {
                 -- to learn the available actions
                 lsp_zero.default_keymaps({ buffer = bufnr })
             end)
+            lsp_zero.set_sign_icons({
+                error = '✘',
+                warn = '▲',
+                hint = '⚑',
+                info = '»'
+            })
 
             require('mason-lspconfig').setup({
                 ensure_installed = {

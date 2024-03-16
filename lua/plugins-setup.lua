@@ -13,7 +13,7 @@ vim.opt.runtimepath:prepend(lazypath)
 
 -- load lazy
 require("lazy").setup("plugins", {
-    install = { colorscheme = { 'projekt0n/github-nvim-theme' } }, --"tokyonight" } },
+    install = { colorscheme = { "tokyonight" } },
     defaults = { lazy = true },
     ui = {
         border = "rounded",
