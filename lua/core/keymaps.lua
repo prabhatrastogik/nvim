@@ -18,6 +18,9 @@ keymap({ "i", "v", "n" }, "<C-s>", "<cmd>w<cr><esc>", opts)
 -- Close buffer
 vim.keymap.set({ "v", "n" }, "<C-w>", "<cmd>bd<cr><esc>", { desc = "Close buffer" })
 
+-- Close folder
+vim.keymap.set({ "v", "n" }, "<C-q>", "<cmd>q!<cr>", { desc = "Close buffer" })
+
 -- Navigate buffers
 keymap("n", "<leader><Right>", ":bnext<CR>", opts)
 keymap("n", "<leader><Left>", ":bprevious<CR>", opts)
