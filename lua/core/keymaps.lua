@@ -10,10 +10,10 @@ keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
 -- Select all
-keymap("n", "<C-a>", "ggVG<cr>", opts)
+-- keymap("n", "<C-a>", "ggVG<cr>", opts)
 
 -- Save file
-keymap({ "i", "v", "n" }, "<C-s>", "<cmd>w<cr><esc>", opts)
+keymap({ "v", "n" }, "<C-s>", "<cmd>w<cr><esc>", opts)
 
 -- Close buffer
 vim.keymap.set({ "v", "n" }, "<C-w>", "<cmd>bd<cr><esc>", { desc = "Close buffer" })
