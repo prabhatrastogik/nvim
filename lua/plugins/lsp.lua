@@ -96,7 +96,7 @@ return {
                 ensure_installed = {
                     "clangd",
                     "tsserver",
-                    "pyright",
+                    "ruff_lsp",
                     "lua_ls",
                     "eslint",
                     "bashls",

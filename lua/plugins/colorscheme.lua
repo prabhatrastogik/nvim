@@ -9,7 +9,7 @@ local M = {
             GitDelete = "#FE747A",
         }
         return {
-            style = "night",
+            style = "storm",
             -- hide_inactive_statusline = true,
             on_highlights = function(hl, _)
                 hl.GitSignsAdd = {
