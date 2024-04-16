@@ -22,6 +22,7 @@ return {
         event = 'InsertEnter',
         dependencies = {
             { 'L3MON4D3/LuaSnip' },
+            { 'VonHeikemen/lsp-zero.nvim' },
         },
         config = function()
             -- Here is where you configure the autocompletion settings.
@@ -72,6 +73,7 @@ return {
         dependencies = {
             { 'hrsh7th/cmp-nvim-lsp' },
             { 'williamboman/mason-lspconfig.nvim' },
+            { 'VonHeikemen/lsp-zero.nvim' },
         },
         config = function()
             -- This is where all the LSP shenanigans will live
