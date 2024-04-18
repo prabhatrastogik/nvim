@@ -3,7 +3,7 @@ local M = {
     build = function()
         require("nvim-treesitter.install").update({ with_sync = true })()
     end,
-    event = "BufReadPost",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
         local configs = require("nvim-treesitter.configs")
         configs.setup({
