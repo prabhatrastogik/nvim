@@ -1,17 +1,16 @@
 local M = {
     "nvim-telescope/telescope.nvim",
-    event = "BufReadPre",
     dependencies = {
         { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
     keys = {
-        { "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>" },
-        { "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>" },
-        { "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>" },
-        { "<leader>fc", "<cmd>lua require('telescope.builtin').colorscheme()<cr>" },
-        { "<leader>fl", "<cmd>lua require('telescope.builtin').lsp_references()<cr>" },
-        { "<leader>fi", "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>" },
-        { "<leader>fd", "<cmd>lua require('telescope.builtin').diagnostics()<cr>" },
+        { "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>",          desc = "Find Files" },
+        { "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>",           desc = "Live Grep" },
+        { "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>",             desc = "Buffers" },
+        { "<leader>fc", "<cmd>lua require('telescope.builtin').colorscheme()<cr>",         desc = "ColorSchemes" },
+        { "<leader>fl", "<cmd>lua require('telescope.builtin').lsp_references()<cr>",      desc = "LSP References" },
+        { "<leader>fi", "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>", desc = "LSP Implementation" },
+        { "<leader>fd", "<cmd>lua require('telescope.builtin').diagnostics()<cr>",         desc = "Diagnostics" },
     },
     opts = function()
         local actions = require("telescope.actions")
