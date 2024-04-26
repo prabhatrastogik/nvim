@@ -9,6 +9,13 @@ local M = {
         }
     },
     {
+        "rose-pine/neovim",
+        name = "rose-pine",
+        lazy = false,
+        priority = 1000,
+        config = true,
+    },
+    {
         'marko-cerovac/material.nvim',
         lazy = false,
         priority = 1000,

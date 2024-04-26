@@ -1,7 +1,7 @@
 require("core.options")
 require("plugins-setup")
 
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "catppuccin-frappe"
 
 vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",

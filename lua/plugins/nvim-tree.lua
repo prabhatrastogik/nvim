@@ -11,7 +11,7 @@ local M = {
     opts = {
         sort_by = "case_sensitive",
         view = {
-            width = 30,
+            width = 40,
             side = 'right',
         },
         renderer = {
