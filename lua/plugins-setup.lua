@@ -19,4 +19,5 @@ require("lazy").setup("plugins", {
     },
     checker = { enabled = true },
     debug = false,
+    rocks = { enabled = false, hererocks = false }
 })

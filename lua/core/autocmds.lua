@@ -1,8 +1,19 @@
-vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
-
 local lsp_group = vim.api.nvim_create_augroup('LspActions', {})
+local autocmd = vim.api.nvim_create_autocmd
+local map = vim.keymap.set
+local lsp_keys = {
+    gD = { vim.lsp.buf.declaration, "Go to Declaration" },
+    gd = { vim.lsp.buf.definition, "Go to Definition" },
+    K = { vim.lsp.buf.hover, "Hover - Show Details" },
+    gi = { vim.lsp.buf.implementation, "Go to Implementation" },
+    gr = { vim.lsp.buf.references, "Show all References" },
+    ['<space>ls'] = { vim.lsp.buf.signature_help, "Signature Help" },
+    ['<space>lt'] = { vim.lsp.buf.type_definition, "Type Definitions" },
+    ['<space>ln'] = { vim.lsp.buf.rename, "Rename Across" },
+}
 
-vim.api.nvim_create_autocmd('LspAttach', {
+
+autocmd('LspAttach', {
     group = lsp_group,
     callback = function(ev)
         -- Enable completion triggered by <c-x><c-o>
@@ -10,26 +21,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         -- Buffer local mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
-        local opts = { buffer = ev.buf }
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-        vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
-        vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
-        vim.keymap.set('n', '<space>wl', function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, opts)
-        -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
-        -- vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
-        -- vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+        for k, v in pairs(lsp_keys) do
+            map('n', k, v[1], { buffer = ev.buf, desc = v[2] })
+        end
+        map({ 'n', 'v' }, '<space>lc', vim.lsp.buf.code_action, { buffer = ev.buf, desc = "Code Actions" })
     end,
 })
 
 
-vim.api.nvim_create_autocmd('LspAttach', {
+autocmd('LspAttach', {
     group = lsp_group,
     -- This is where we attach the autoformatting for reasonable clients
     callback = function(args)
@@ -40,9 +40,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         if not client or not client.server_capabilities.documentFormattingProvider then
             return
         end
-
-
-        vim.api.nvim_create_autocmd('BufWritePre', {
+        autocmd('BufWritePre', {
             group = lsp_group,
             buffer = bufnr,
             callback = function()

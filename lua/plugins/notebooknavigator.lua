@@ -10,13 +10,10 @@ return {
         dependencies = {
             "echasnovski/mini.comment",
             "Vigemus/iron.nvim", -- repl provider
-            "anuvyklack/hydra.nvim",
+            -- "anuvyklack/hydra.nvim",
         },
         event = "VeryLazy",
-        config = function()
-            local nn = require "notebook-navigator"
-            nn.setup({ activate_hydra_keys = "<leader>h" })
-        end,
+        opts = {},
     },
     {
         "echasnovski/mini.hipatterns",
