@@ -47,10 +47,11 @@ end
 local global_vars = {
     mapleader = " ",
     maplocalleader = " ",
-    python3_host_prog = "~/.config/nvim/.venv/bin/python",  -- Create venv and install pynvim
+    python3_host_prog = "~/.config/nvim/.venv/bin/python", -- Create venv and install pynvim
     -- npm install neovim
     -- sudo gem install neovim
-    loaded_perl_provider = 0,   -- Disable Perl
+    loaded_perl_provider = 0,
+    loaded_ruby_provider = 0,
     -- jupytext_fmt = 'py',
     -- jupytext_style = 'hydrogen',
 }

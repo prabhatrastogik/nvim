@@ -40,3 +40,7 @@ keymap("v", "p", '"_dP', opts)
 keymap("x", "<leader><Up>", ":m '<-2<CR>gv=gv", { desc = "Move up" })
 keymap("x", "<leader><Down>", ":m '>+1<CR>gv=gv", { desc = "Move down" })
 keymap("x", "p", '"_dP', opts)
+
+
+-- Terminal Mode --
+keymap("t", "<Esc>", [[<C-\><C-n>]], { desc = "Exit Terminal" })

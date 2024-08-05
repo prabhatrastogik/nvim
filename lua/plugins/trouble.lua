@@ -5,11 +5,31 @@ return {
     -- lazy = false,
     config = true,
     keys = {
-        { "<leader>xx", "<cmd>TroubleToggle<cr>" },
-        { "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>" },
-        { "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>" },
-        { "<leader>xl", "<cmd>TroubleToggle loclist<cr>" },
-        { "<leader>xq", "<cmd>TroubleToggle quickfix<cr>" },
+        {
+            "<leader>tx",
+            "<cmd>Trouble diagnostics toggle<cr>",
+            desc = "Diagnostics (Trouble)",
+        },
+        {
+            "<leader>tX",
+            "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+            desc = "Buffer Diagnostics (Trouble)",
+        },
+        {
+            "<leader>tl",
+            "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+            desc = "LSP Definitions / references / ... (Trouble)",
+        },
+        {
+            "<leader>tL",
+            "<cmd>Trouble loclist toggle<cr>",
+            desc = "Location List (Trouble)",
+        },
+        {
+            "<leader>tQ",
+            "<cmd>Trouble qflist toggle<cr>",
+            desc = "Quickfix List (Trouble)",
+        },
 
     }
 }

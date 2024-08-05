@@ -1,19 +1,80 @@
+local lsps = {
+    "clangd",
+    "tsserver",
+    "pylsp",
+    "ruff",
+    "lua_ls",
+    "bashls",
+    "yamlls",
+    "jsonls",
+    "cssls",
+    "taplo",
+    "html",
+    "graphql",
+    "tailwindcss",
+    "gopls",
+}
+
 return {
     {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v3.x',
-        lazy = true,
-        config = false,
-        init = function()
-            -- Disable automatic setup, we are doing it manually
-            vim.g.lsp_zero_extend_cmp = 0
-            vim.g.lsp_zero_extend_lspconfig = 0
-        end,
+        'williamboman/mason.nvim',
+        config = true,
     },
     {
-        'williamboman/mason.nvim',
-        lazy = false,
-        config = true,
+        'williamboman/mason-lspconfig.nvim',
+        dependencies = { 'williamboman/mason.nvim' },
+        opts = {
+            ensure_installed = lsps
+        }
+    },
+    {
+        "L3MON4D3/LuaSnip",
+        dependencies = { "rafamadriz/friendly-snippets" },
+    },
+
+    -- LSP
+    {
+        'neovim/nvim-lspconfig',
+        cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
+        event = { 'BufReadPre', 'BufNewFile' },
+        dependencies = {
+            { 'hrsh7th/cmp-nvim-lsp' },
+            { 'williamboman/mason-lspconfig.nvim' },
+        },
+        config = function()
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            local lspconfig = require("lspconfig")
+            for _, lsp in ipairs(lsps) do
+                lspconfig[lsp].setup {
+                    capabilities = capabilities,
+                }
+            end
+
+            local lua_ls_setup = {
+                Lua = {
+                    runtime = {
+                        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                        version = "LuaJIT",
+                    },
+                    diagnostics = {
+                        -- Get the language server to recognize the `vim` global
+                        globals = { "vim" },
+                    },
+                    workspace = {
+                        -- Make the server aware of Neovim runtime files
+                        library = vim.api.nvim_get_runtime_file("", true),
+                    },
+                    -- Do not send telemetry data containing a randomized but unique identifier
+                    telemetry = {
+                        enable = false,
+                    },
+                },
+            }
+            lspconfig.lua_ls.setup {
+                capabilities = capabilities,
+                settings = lua_ls_setup
+            }
+        end
     },
 
     -- Autocompletion
@@ -21,17 +82,18 @@ return {
         'hrsh7th/nvim-cmp',
         event = 'InsertEnter',
         dependencies = {
-            { 'L3MON4D3/LuaSnip' },
-            { 'VonHeikemen/lsp-zero.nvim' },
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-buffer",
+            "L3MON4D3/LuaSnip",
+            "hrsh7th/cmp-cmdline",
+            "saadparwaiz1/cmp_luasnip",
+            -- "rcarriga/cmp-dap",
         },
         config = function()
-            -- Here is where you configure the autocompletion settings.
-            local lsp_zero = require('lsp-zero')
-            lsp_zero.extend_cmp()
+            local cmp = require("cmp")
+            local luasnip = require("luasnip")
 
-            -- And you can configure cmp even more, if you want to.
-            local cmp = require('cmp')
-            local cmp_action = lsp_zero.cmp_action()
             require('luasnip.loaders.from_vscode').lazy_load()
 
             cmp.setup({
@@ -45,81 +107,62 @@ return {
                     completion = cmp.config.window.bordered(),
                     documentation = cmp.config.window.bordered(),
                 },
-                formatting = lsp_zero.cmp_format({ details = true }),
+                snippet = {
+                    expand = function(args) luasnip.lsp_expand(args.body) end,
+                },
                 mapping = cmp.mapping.preset.insert({
-                    -- confirm completion item
-                    ['<Enter>'] = cmp.mapping.confirm({ select = true }),
-
-                    -- trigger completion menu
-                    ['<C-Space>'] = cmp.mapping.complete(),
-
-                    -- scroll up and down the documentation window
-                    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-                    ['<C-d>'] = cmp.mapping.scroll_docs(4),
-
-                    -- navigate between snippet placeholders
-                    ['<C-f>'] = cmp_action.luasnip_jump_forward(),
-                    ['<C-b>'] = cmp_action.luasnip_jump_backward(),
+                    ["<C-d>"] = cmp.mapping.scroll_docs(4),
+                    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+                    ["<C-Space>"] = cmp.mapping.complete(),
+                    ["<C-e>"] = cmp.mapping.close(),
+                    ["<CR>"] = cmp.mapping.confirm({
+                        select = true,
+                    }),
+                    ["<Tab>"] = cmp.mapping(function(fallback)
+                        -- Prefer jumping if both jumping and expanding are available
+                        -- Otherwise, you may recursively expand a snippet without ever jumping
+                        -- (which is annoying)
+                        if cmp.visible() then
+                            cmp.select_next_item()
+                        elseif luasnip.jumpable(1) then
+                            luasnip.jump(1)
+                        elseif luasnip.expandable() then
+                            luasnip.expand()
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        elseif luasnip.jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
                 }),
+            })
+            cmp.setup.cmdline('/', {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = {
+                    { name = 'buffer' }
+                }
+            })
+            cmp.setup.cmdline(':', {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({
+                    { name = 'path' }
+                }, {
+                    {
+                        name = 'cmdline',
+                        option = {
+                            ignore_cmds = { 'Man', '!' }
+                        }
+                    }
+                })
             })
         end
     },
 
-    -- LSP
-    {
-        'neovim/nvim-lspconfig',
-        cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
-        event = { 'BufReadPre', 'BufNewFile' },
-        dependencies = {
-            { 'hrsh7th/cmp-nvim-lsp' },
-            { 'williamboman/mason-lspconfig.nvim' },
-            { 'VonHeikemen/lsp-zero.nvim' },
-        },
-        config = function()
-            -- This is where all the LSP shenanigans will live
-            local lsp_zero = require('lsp-zero')
-            lsp_zero.extend_lspconfig()
-
-            --- if you want to know more about lsp-zero and mason.nvim
-            --- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
-            lsp_zero.on_attach(function(_, bufnr)
-                -- see :help lsp-zero-keybindings
-                -- to learn the available actions
-                lsp_zero.default_keymaps({ buffer = bufnr })
-            end)
-            lsp_zero.set_sign_icons({
-                error = '✘',
-                warn = '▲',
-                hint = '⚑',
-                info = '»'
-            })
-
-            require('mason-lspconfig').setup({
-                ensure_installed = {
-                    "clangd",
-                    "tsserver",
-                    "ruff_lsp",
-                    "lua_ls",
-                    "eslint",
-                    "bashls",
-                    "yamlls",
-                    "jsonls",
-                    "cssls",
-                    "taplo",
-                    "html",
-                    "graphql",
-                    "tailwindcss",
-                    "gopls",
-                },
-                handlers = {
-                    lsp_zero.default_setup,
-                    lua_ls = function()
-                        -- (Optional) Configure lua language server for neovim
-                        local lua_opts = lsp_zero.nvim_lua_ls()
-                        require('lspconfig').lua_ls.setup(lua_opts)
-                    end,
-                }
-            })
-        end
-    }
 }
