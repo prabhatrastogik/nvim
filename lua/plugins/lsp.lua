@@ -1,7 +1,7 @@
 local lsps = {
     "clangd",
     "tsserver",
-    "pylsp",
+    "pyright",
     "ruff",
     "lua_ls",
     "bashls",
@@ -74,6 +74,30 @@ return {
             lspconfig.lua_ls.setup {
                 capabilities = capabilities,
                 settings = lua_ls_setup
+            }
+            lspconfig.ruff.setup({
+                capabilities = capabilities,
+                init_options = {
+                    settings = {
+                        lineLength = 100,
+                        organizeImports = true,
+                    }
+                }
+            })
+            lspconfig.pyright.setup {
+                capabilities = capabilities,
+                settings = {
+                    pyright = {
+                        -- Using Ruff's import organizer
+                        -- disableOrganizeImports = true,
+                    },
+                    python = {
+                        analysis = {
+                            -- Ignore all files for analysis to exclusively use Ruff for linting
+                            ignore = { '*' },
+                        },
+                    },
+                },
             }
         end
     },
