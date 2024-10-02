@@ -1,6 +1,6 @@
 local lsps = {
     "clangd",
-    "tsserver",
+    "ts_ls",
     "pyright",
     "ruff",
     "lua_ls",
