@@ -1,61 +1,88 @@
--- options.lua
+-- Editor settings applied before plugins load so plugins can read them.
+
 local options = {
-    backup = false,            -- creates a backup file of live buffer - if true
-    clipboard = "unnamedplus", -- allows neovim to access the system clipboard
-    cmdheight = 2,             -- more space in the neovim command line for displaying messages
-    fileencoding = "utf-8",    -- the encoding written to a file
+    backup = false,             -- don't litter the filesystem with .bak files
+    clipboard = "unnamedplus", -- sync y/p with the OS clipboard (requires xclip/pbcopy)
+    cmdheight = 1,             -- set to 0 if using noice.nvim to reclaim the bottom line
+    fileencoding = "utf-8",
 
-    hlsearch = false,          -- highlight all matches on previous search pattern - if true
-    incsearch = true,          -- highlight incremental search
-    ignorecase = true,         -- ignore case in search patterns
-    smartcase = true,          -- smart case - dont ignore case if capital letter in search string
-    showmode = false,          -- Dont show mode since we have a statusline
+    hlsearch = false,          -- clear search highlights automatically (toggle with :noh if needed)
+    incsearch = true,          -- highlight matches as you type the search pattern
+    ignorecase = true,         -- case-insensitive search by default ...
+    smartcase = true,          -- ... unless the query contains a capital letter
+    showmode = false,          -- lualine already shows INSERT/NORMAL/VISUAL in the statusline
 
-    mouse = "a",               -- allow the mouse to be used in neovim
-    pumheight = 10,            -- pop up menu height
-    showtabline = 2,           -- always show tabs
+    mouse = "a",               -- enable mouse in all modes (resize splits, scroll, click)
+    pumheight = 10,            -- limit the completion popup to 10 visible items
+    showtabline = 2,           -- always show the tabline (lualine uses it to display open buffers)
 
-    smartindent = true,        -- make indenting smarter again
-    splitbelow = true,         -- force all horizontal splits to go below current window
-    splitright = true,         -- force all vertical splits to go to the right of current window
-    swapfile = false,          -- creates a swapfile - if true
-    termguicolors = true,      -- set term gui colors (most terminals support this)
-    undofile = true,           -- enable persistent undo
-    updatetime = 300,          -- faster completion (4000ms default)
-    writebackup = false,       -- if a file is being edited by another program, it is not allowed to be edited
+    smartindent = true,        -- auto-indent new lines following the current line's syntax
+    splitbelow = true,         -- horizontal splits open below the current window
+    splitright = true,         -- vertical splits open to the right
+    swapfile = false,          -- no .swp files; undofile handles crash recovery
+    termguicolors = true,      -- 24-bit colour (required by catppuccin and most modern plugins)
+    undofile = true,           -- persist undo history across sessions (~/.local/share/nvim/undo)
+    updatetime = 300,          -- ms until CursorHold fires — controls gitsigns and LSP hover latency
+    writebackup = false,       -- don't create a pre-write backup (undofile is the safety net)
 
-    expandtab = true,          -- convert tabs to spaces
-    shiftwidth = 4,            -- the number of spaces inserted for each indentation
-    tabstop = 4,               -- insert 4 spaces for a tab
-    softtabstop = 4,
-    cursorline = true,         -- highlight the current line
-    number = true,             -- set numbered lines
-    relativenumber = true,     -- set relative numbered lines
+    expandtab = true,          -- <Tab> inserts spaces instead of a tab character
+    shiftwidth = 4,            -- columns per indent level (>>, <<, auto-indent)
+    tabstop = 4,               -- visual width of an actual tab character in the file
+    softtabstop = 4,           -- backspace deletes this many spaces at once
 
-    signcolumn = "yes",        -- always show the sign column, otherwise it would shift the text each time
-    wrap = true,               -- display lines as one long line
-    linebreak = true,          -- companion to wrap, don't split words
-    scrolloff = 8,             -- minimal number of screen lines to keep above and below the cursor
-    sidescrolloff = 4,         -- minimal number of screen columns either side of cursor if wrap is `false`
+    cursorline = true,         -- highlight the row the cursor is on
+    number = true,             -- show the absolute line number in the gutter
+    relativenumber = true,     -- show relative numbers on all other lines (fast 5j / 12k jumps)
+
+    signcolumn = "yes",        -- always reserve gutter space for signs so text doesn't shift
+    wrap = true,               -- soft-wrap long lines (does not modify the file)
+    linebreak = true,          -- wrap at word boundaries instead of mid-word
+    scrolloff = 8,             -- keep 8 lines visible above and below the cursor when scrolling
+    sidescrolloff = 4,         -- keep 4 columns visible left/right when scrolling horizontally
 }
 
 for k, v in pairs(options) do
     vim.opt[k] = v
 end
 
--- Global Vars
+-- Global variables read by Neovim core and certain plugins at startup
 local global_vars = {
-    mapleader = " ",
+    mapleader      = " ",    -- Space as the leader key
     maplocalleader = " ",
-    python3_host_prog = "~/.config/nvim/.venv/bin/python", -- Create venv and install pynvim
-    -- npm install neovim
-    -- sudo gem install neovim
-    loaded_perl_provider = 0,
-    loaded_ruby_provider = 0,
-    -- jupytext_fmt = 'py',
-    -- jupytext_style = 'hydrogen',
+    -- Path to the pynvim venv so :python3 and remote plugins use a known interpreter.
+    -- Rebuild with: python3 -m venv .venv && .venv/bin/pip install pynvim
+    -- Note: this is for neovim's own python host, not your project's interpreter.
+    --       Use venv-selector.nvim (<leader>pv) to point the LSP at your project venv.
+    python3_host_prog = "~/.config/nvim/.venv/bin/python",
+    loaded_perl_provider = 0,   -- disable perl provider (not used; avoids startup warning)
+    loaded_ruby_provider = 0,   -- disable ruby provider
 }
 
 for k, v in pairs(global_vars) do
     vim.g[k] = v
 end
+
+-- Teach Neovim about compound/non-standard filetypes so LSP servers that register
+-- them (yamlls, gopls) don't produce "Unknown filetype" warnings in :checkhealth.
+vim.filetype.add({
+    extension = {
+        tmpl   = "gotmpl",   -- Go text/html templates
+        gotmpl = "gotmpl",
+        mdx    = "mdx",      -- MDX (Markdown + JSX)
+        ejs    = "ejs",      -- EJS templates
+        pcss   = "postcss",  -- PostCSS
+        njk    = "njk",      -- Nunjucks
+    },
+    filename = {
+        ["docker-compose.yml"]  = "yaml.docker-compose",
+        ["docker-compose.yaml"] = "yaml.docker-compose",
+        ["compose.yml"]         = "yaml.docker-compose",
+        ["compose.yaml"]        = "yaml.docker-compose",
+        [".gitlab-ci.yml"]      = "yaml.gitlab",
+    },
+    pattern = {
+        ["docker%-compose%..*%.ya?ml"] = "yaml.docker-compose",
+        [".*/templates/.*%.ya?ml"]     = "yaml.helm-values",
+        ["values%..*%.ya?ml"]          = "yaml.helm-values",
+    },
+})

@@ -1,56 +1,44 @@
+-- Available colorschemes — only catppuccin loads eagerly (lazy = false, priority = 1000)
+-- because it is the active theme set in init.lua.
+-- The others are installed but load lazily; switch with <leader>fc (fzf colorschemes).
+
 local M = {
     {
         'navarasu/onedark.nvim',
-        lazy = false,
-        priority = 1000,
         config = true,
         opts = {
-            style = 'cool', -- Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
+            style = 'cool', -- variants: 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'
         }
     },
     {
         "rose-pine/neovim",
-        name = "rose-pine",
-        lazy = false,
-        priority = 1000,
+        name   = "rose-pine",
         config = true,
     },
     {
         'marko-cerovac/material.nvim',
-        lazy = false,
-        priority = 1000,
         config = true,
     },
     {
-        "catppuccin/nvim", name = "catppuccin", priority = 1000
+        "catppuccin/nvim",
+        name     = "catppuccin",
+        lazy     = false,       -- must load at startup — this is the active theme
+        priority = 1000,        -- load before all other plugins so highlights apply correctly
     },
     {
         "folke/tokyonight.nvim",
-        lazy = false,
-        priority = 1000,
+        config = true,
         opts = function()
-            local colors = {
-                GitAdd = "#A1C281",
-                GitChange = "#74ADEA",
-                GitDelete = "#FE747A",
-            }
             return {
                 style = "storm",
-                -- hide_inactive_statusline = true,
                 on_highlights = function(hl, _)
-                    hl.GitSignsAdd = {
-                        fg = colors.GitAdd,
-                    }
-                    hl.GitSignsChange = {
-                        fg = colors.GitChange,
-                    }
-                    hl.GitSignsDelete = {
-                        fg = colors.GitDelete,
-                    }
+                    -- Match gitsigns colours to a consistent palette
+                    hl.GitSignsAdd    = { fg = "#A1C281" }
+                    hl.GitSignsChange = { fg = "#74ADEA" }
+                    hl.GitSignsDelete = { fg = "#FE747A" }
                 end,
             }
         end,
-        config = true,
     }
 }
 
