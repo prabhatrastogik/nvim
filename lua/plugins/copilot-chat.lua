@@ -13,23 +13,24 @@
 return {
     "CopilotC-Nvim/CopilotChat.nvim",
     dependencies = {
-        "github/copilot.vim",
+        "zbirenbaum/copilot.lua",
         "nvim-lua/plenary.nvim",
     },
+    build = "make tiktoken",
     cmd = { "CopilotChat", "CopilotChatToggle" },
     keys = {
         { "<leader>cc", "<cmd>CopilotChatToggle<cr>",  desc = "Copilot: Toggle Chat" },
-        { "<leader>ce", "<cmd>CopilotChatExplain<cr>", mode = { "n", "v" }, desc = "Copilot: Explain" },
-        { "<leader>cr", "<cmd>CopilotChatReview<cr>",  mode = { "n", "v" }, desc = "Copilot: Review" },
-        { "<leader>cf", "<cmd>CopilotChatFix<cr>",     mode = { "n", "v" }, desc = "Copilot: Fix" },
-        { "<leader>ct", "<cmd>CopilotChatTests<cr>",   mode = { "n", "v" }, desc = "Copilot: Generate Tests" },
+        { "<leader>ce", "<cmd>CopilotChatExplain<cr>", mode = { "n", "v" },          desc = "Copilot: Explain" },
+        { "<leader>cr", "<cmd>CopilotChatReview<cr>",  mode = { "n", "v" },          desc = "Copilot: Review" },
+        { "<leader>cf", "<cmd>CopilotChatFix<cr>",     mode = { "n", "v" },          desc = "Copilot: Fix" },
+        { "<leader>ct", "<cmd>CopilotChatTests<cr>",   mode = { "n", "v" },          desc = "Copilot: Generate Tests" },
     },
     opts = {
-        window = {
+        window             = {
             layout = "vertical",
-            width  = 0.4,            -- 40% of screen width
+            width  = 0.4, -- 40% of screen width
         },
         show_help          = true,
-        auto_follow_cursor = false,  -- don't scroll the chat buffer as cursor moves in code
+        auto_follow_cursor = false, -- don't scroll the chat buffer as cursor moves in code
     },
 }
