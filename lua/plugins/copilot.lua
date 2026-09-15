@@ -2,22 +2,16 @@
 -- Accept: <Tab>   Dismiss: <C-]>   Next/prev: <M-]> / <M-[>
 -- See plugins/copilot-chat.lua for the AI chat interface.
 return {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    opts = {
-        suggestion = {
-            enabled = true,
-            auto_trigger = true,
-            keymap = {
-                accept        = "<Tab>",
-                accept_word   = "<M-w>",
-                accept_line   = "<M-l>",
-                next          = "<M-]>",
-                prev          = "<M-[>",
-                dismiss       = "<C-]>",
-            },
-        },
-        panel = { enabled = false },
+    {
+        "github/copilot.vim",
+        lazy = false,                       -- load immediately
+        config = function()
+            vim.g.copilot_no_tab_map = true -- optional: disable default <Tab> mapping
+            vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', {
+                expr = true,
+                silent = true,
+                noremap = true
+            })
+        end,
     },
 }

@@ -66,6 +66,17 @@ return {
 
     -- LSP client configuration
     {
+        "folke/lazydev.nvim",
+        ft = "lua",
+        opts = {
+            library = {
+                { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+            },
+        },
+    },
+
+    -- LSP
+    {
         'neovim/nvim-lspconfig',
         cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
         event = { 'BufReadPre', 'BufNewFile' },
@@ -77,6 +88,7 @@ return {
             -- Advertise nvim-cmp's extended capabilities to every server so it knows
             -- to send completion items in the richer format cmp expects
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
+<<<<<<< HEAD
 
             -- Apply the enhanced capabilities to every server in the list
             for _, lsp in ipairs(lsps) do
@@ -94,10 +106,31 @@ return {
                             library = vim.api.nvim_get_runtime_file("", true),  -- neovim runtime files
                         },
                         telemetry = { enable = false },
+=======
+
+            -- Custom configurations for specific LSPs
+            local custom_configs = {
+                lua_ls = {
+                    capabilities = capabilities,
+                    settings = {
+                        Lua = {
+                            telemetry = { enable = false },
+                        },
+                    },
+                },
+                ruff = {
+                    capabilities = capabilities,
+                    init_options = {
+                        settings = {
+                            lineLength = 100,
+                            organizeImports = true,
+                        },
+>>>>>>> 828afe4 (Corrected config issues)
                     },
                 },
             }
 
+<<<<<<< HEAD
             -- ruff: linting + import organisation (formatting handled by conform.nvim)
             vim.lsp.config.ruff = {
                 capabilities = capabilities,
@@ -110,6 +143,13 @@ return {
             }
 
             vim.lsp.enable(lsps)
+=======
+            for _, lsp in ipairs(lsps) do
+                local cfg = custom_configs[lsp] or { capabilities = capabilities }
+                vim.lsp.config(lsp, cfg)
+                vim.lsp.enable(lsp)
+            end
+>>>>>>> 828afe4 (Corrected config issues)
         end
     },
 

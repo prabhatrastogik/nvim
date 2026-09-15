@@ -18,8 +18,26 @@ local M = {
         ignore = "^$"   -- don't comment empty lines
     },
     keys = {
-        { "<C-/>", mode = "n", "<Plug>(comment_toggle_linewise_current)", desc = "Toggle Comment" },
-        { "<C-/>", mode = "x", "<Plug>(comment_toggle_linewise_visual)",  desc = "Toggle Comment" },
+        {
+            "<C-/>",
+            mode = "n",
+            "<Plug>(comment_toggle_linewise_current)",
+        },
+        {
+            "<C-_>",
+            mode = "n",
+            "<Plug>(comment_toggle_linewise_current)",
+        },
+        {
+            "<C-/>",
+            mode = "x",
+            "<Plug>(comment_toggle_linewise_visual)",
+        },
+        {
+            "<C-_>",
+            mode = "x",
+            "<Plug>(comment_toggle_linewise_visual)",
+        },
     },
 }
 

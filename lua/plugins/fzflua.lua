@@ -15,14 +15,14 @@ local fzflua = {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {},
     keys = {
-        { "<leader>ff", "<cmd>FzfLua files<cr>",                 desc = "Fuzzy: Find Files" },
-        { "<leader>fg", "<cmd>FzfLua live_grep<cr>",             desc = "Fuzzy: Live Grep" },
-        { "<leader>fb", "<cmd>FzfLua buffers<cr>",               desc = "Fuzzy: Buffers" },
-        { "<leader>fc", "<cmd>FzfLua colorschemes<cr>",          desc = "Fuzzy: Colorschemes" },
-        { "<leader>fl", "<cmd>FzfLua lsp_references<cr>",        desc = "Fuzzy: LSP References" },
-        { "<leader>fi", "<cmd>FzfLua lsp_implementations<cr>",   desc = "Fuzzy: LSP Implementations" },
-        { "<leader>fd", "<cmd>FzfLua diagnostics_workspace<cr>", desc = "Fuzzy: Workspace Diagnostics" },
-        { "<leader>fs", "<cmd>FzfLua git_status<cr>",            desc = "Fuzzy: Git Status" },
+        { "<leader>ff", "<cmd>FzfLua files<cr>",                 desc = "Fuzzy find files" },
+        { "<leader>fg", "<cmd>FzfLua live_grep<cr>",             desc = "Fuzzy grep files" },
+        { "<leader>fb", "<cmd>FzfLua buffers<cr>",               desc = "Fuzzy search opened buffers" },
+        { "<leader>fc", "<cmd>FzfLua colorschemes<cr>",          desc = "ColorSchemes" },
+        { "<leader>fl", "<cmd>FzfLua lsp_references<cr>",        desc = "LSP References" },
+        { "<leader>fi", "<cmd>FzfLua lsp_implementations<cr>",   desc = "LSP Implementation" },
+        { "<leader>fd", "<cmd>FzfLua diagnostics_workspace<cr>", desc = "Diagnostics" },
+        { "<leader>fG", "<cmd>FzfLua git_status<cr>",            desc = "Git Status" },
     },
 }
 

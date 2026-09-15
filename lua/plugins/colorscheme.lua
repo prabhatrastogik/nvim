@@ -20,10 +20,7 @@ local M = {
         config = true,
     },
     {
-        "catppuccin/nvim",
-        name     = "catppuccin",
-        lazy     = false,       -- must load at startup — this is the active theme
-        priority = 1000,        -- load before all other plugins so highlights apply correctly
+        "catppuccin/nvim", name = "catppuccin", lazy = false, priority = 1000
     },
     {
         "folke/tokyonight.nvim",

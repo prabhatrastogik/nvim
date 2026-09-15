@@ -49,13 +49,13 @@ end
 local global_vars = {
     mapleader      = " ",    -- Space as the leader key
     maplocalleader = " ",
-    -- Path to the pynvim venv so :python3 and remote plugins use a known interpreter.
-    -- Rebuild with: python3 -m venv .venv && .venv/bin/pip install pynvim
-    -- Note: this is for neovim's own python host, not your project's interpreter.
-    --       Use venv-selector.nvim (<leader>pv) to point the LSP at your project venv.
-    python3_host_prog = "~/.config/nvim/.venv/bin/python",
-    loaded_perl_provider = 0,   -- disable perl provider (not used; avoids startup warning)
-    loaded_ruby_provider = 0,   -- disable ruby provider
+    python3_host_prog = vim.fn.expand("~/.config/nvim/.venv/bin/python"), -- Create venv and install pynvim
+    -- npm install neovim
+    -- sudo gem install neovim
+    loaded_perl_provider = 0,
+    loaded_ruby_provider = 0,
+    -- jupytext_fmt = 'py',
+    -- jupytext_style = 'hydrogen',
 }
 
 for k, v in pairs(global_vars) do
