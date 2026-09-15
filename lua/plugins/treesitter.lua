@@ -4,22 +4,8 @@
 
 local M = {
     "nvim-treesitter/nvim-treesitter",
-    branch = "main",
-    build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile", "VeryLazy" },
-    opts = {
-        ensure_installed = {
-            "c", "lua", "vim", "vimdoc", "query",
-            "python", "go", "javascript", "typescript",
-            "html", "css", "json", "yaml", "markdown",
-            "rust", "dockerfile", "elixir", "heex",
-        },
-        auto_install = true,
-    },
-    config = function(_, opts)
-        require("nvim-treesitter").setup(opts)
-    end,
     event = { "BufReadPost", "BufNewFile" },
+    build = ":TSUpdate",
     config = function()
         local configs = require("nvim-treesitter.configs")
         configs.setup({
